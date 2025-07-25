@@ -12,7 +12,7 @@ import { Logo } from '@/components/features/logo'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+//   const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-background">

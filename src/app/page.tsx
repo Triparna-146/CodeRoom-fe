@@ -1,10 +1,7 @@
 // import Image from "next/image";
 "use client";
 
-import { ThemeToggle } from "@/components/features/theme-toggle";
 import { Navbar } from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 export default function Home() {
   return (
@@ -16,10 +13,6 @@ export default function Home() {
           <br />
           <span>Room</span>
         </h1>
-        {/* <ThemeToggle />
-        <Button onClick={() => toast.success("Welcome to CodeRoom!")}>
-          Get Started
-        </Button> */}
       </div>
     </div>
   );
