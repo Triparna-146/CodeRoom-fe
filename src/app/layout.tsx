@@ -8,6 +8,7 @@ import {
   poppins, 
   spaceGrotesk 
 } from '@/lib/fonts'
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "CodeRoom",
@@ -39,7 +40,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >{children}
         </ThemeProvider>
-        
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
