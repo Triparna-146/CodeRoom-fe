@@ -58,8 +58,12 @@ export default function SignupPage() {
         });
       }, 2000);
       setIsLoading(false);
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("An unknown error occurred", error);
+      }
     }
   };
 
