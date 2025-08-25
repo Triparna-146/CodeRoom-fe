@@ -81,10 +81,6 @@ export default function LoginPage() {
               Back to home
             </Link>
 
-            <div className="flex justify-center lg:hidden">
-              <Logo />
-            </div>
-
             <div className="text-center lg:text-left">
               <h2 className="text-2xl sm:text-3xl font-semibold text-foreground">
                 Sign in to your account

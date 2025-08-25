@@ -1,7 +1,7 @@
 // import Image from "next/image";
 "use client";
 
-import { Navbar } from "@/components/Navbar";
+// import { Navbar } from "@/components/navbar/PublicNavbar";
 
 export default function Home() {
   return (

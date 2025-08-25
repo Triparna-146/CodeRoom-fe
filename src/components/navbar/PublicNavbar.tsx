@@ -7,14 +7,14 @@ import { Logo } from '@/components/features/logo'
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-export function Navbar() {
+export function PublicNavbar() {
 
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-secondary/65 backdrop-blur supports-[backdrop-filter]:bg-secondary/40">
-      <div className="container flex h-16 px-6 items-center justify-between">
+      <div className="container mx-auto flex h-16 px-6 items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
@@ -33,7 +33,7 @@ export function Navbar() {
           </Button>
           )}
           {/* Show Profile if Logged In */}
-        {isLoggedIn && (
+        {/* {isLoggedIn && (
           <div className="flex items-center gap-2">
             <Button variant="secondary">
               <Link href="/profile" className="font-medium">
@@ -41,17 +41,8 @@ export function Navbar() {
               </Link>
             </Button>
             
-            {/* <button
-              onClick={() => {
-                localStorage.removeItem("token");
-                window.location.href = "/login";
-              }}
-              className="px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600"
-            >
-              Logout
-            </button> */}
           </div>
-        )}
+        )} */}
         </div>
       </div>
     </header>
