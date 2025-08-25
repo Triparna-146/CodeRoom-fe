@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,10 +12,56 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Eye, EyeOff, Github, Mail } from "lucide-react";
 import { Logo } from "@/components/features/logo";
+import { Sign } from "crypto";
+
+const schema = yup.object().shape({
+  name: yup.string().required("Name is Required"),
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
+type SignupFormInputs = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
-//   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormInputs>({
+    resolver: yupResolver(schema),
+  });
+
+  const handleSignup = async (data: SignupFormInputs) => {
+    try {
+      setIsLoading(true);
+      // Simulate a login process
+      setTimeout(() => {
+        setIsLoading(false);
+        // Handle successful login here
+        console.log("Signing up with:", {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+      }, 2000);
+      setIsLoading(false);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-background">
@@ -20,12 +69,12 @@ export default function SignupPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary/20 via-primary/10 to-background relative">
         <div className="absolute inset-0 bg-grid-white/10 bg-grid-16 [mask-image:radial-gradient(white,transparent_70%)]" />
 
-        <div className="absolute top-6 left-6 z-20">
+        {/* <div className="absolute top-6 left-6 z-20">
           <Link href="/" className="flex items-center space-x-2">
             <Logo />
           </Link>
-        </div>
-        <div className="relative z-10 flex flex-col justify-center px-12 xl:px-20">
+        </div> */}
+        <div className="relative z-10 flex flex-col py-50 px-12 xl:px-20">
           <div className="max-w-md">
             <h1 className="text-4xl font-bold text-foreground mb-4 leading-snug">
               Join us and start your journey
@@ -104,7 +153,7 @@ export default function SignupPage() {
           {/* Signup Form */}
           <Card className="border-border/50">
             <CardContent className="pt-6">
-              <form className="space-y-5">
+              <form className="space-y-5" onSubmit={handleSubmit(handleSignup)}>
                 {/* Full Name */}
                 <div className="space-y-1">
                   <Label htmlFor="name" className="text-sm font-medium">
@@ -115,8 +164,12 @@ export default function SignupPage() {
                     type="text"
                     placeholder="Enter your name"
                     className="h-11"
+                    {...register('name')}
                     disabled={isLoading}
                   />
+                  {errors.name && (
+                    <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>
+                  )}
                 </div>
 
                 {/* Email */}
@@ -126,11 +179,15 @@ export default function SignupPage() {
                   </Label>
                   <Input
                     id="email"
-                    type="email"
+                    // type="email"?\
                     placeholder="Enter your email"
                     className="h-11"
+                    {...register('email')}
                     disabled={isLoading}
                   />
+                  {errors.email && (
+                    <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+                  )}
                 </div>
 
                 {/* Password */}
@@ -144,6 +201,7 @@ export default function SignupPage() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Create a password"
                       className="h-11 pr-10"
+                      {...register('password')}
                       disabled={isLoading}
                     />
                     <button
@@ -159,6 +217,9 @@ export default function SignupPage() {
                       )}
                     </button>
                   </div>
+                  {errors.password && (
+                    <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+                  )}
                 </div>
 
                 <Button
