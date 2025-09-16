@@ -1,4 +1,4 @@
-import { UpcomingInterviewsTable } from "@/components/dashboard/interviews/UpcomingInterviewsTable";
+import { UpcomingInterviewsTable } from "@/components/interviews/UpcomingInterviewsTable";
 import { Statistics } from "@/components/dashboard/statistics/Statistics";
 import React from "react";
 
@@ -17,7 +17,9 @@ const page = () => {
       </div>
 
       <div className="w-full py-6 space-y-6">
-        <h2 className="text-xl font-normal tracking-wide">Upcoming Interviews</h2>
+        <h2 className="text-xl font-normal tracking-wide">
+          Upcoming Interviews
+        </h2>
         <UpcomingInterviewsTable />
       </div>
     </div>

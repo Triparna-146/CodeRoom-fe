@@ -1,11 +1,20 @@
 "use client"
 
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { InterviewRow } from "./InterviewRow"
+import  InterviewRow  from "./InterviewRow"
 // import { InterviewFilters } from "./InterviewFilters"
 
 // Dummy data
-const interviews = [
+type Interview = {
+  id: string
+  candidate: string
+  position: string
+  date: string
+  time: string
+  status: "Scheduled" | "Pending" | "Completed"
+}
+
+const interviews: Interview[] = [
   {
     id: "1",
     candidate: "Aarav Mehta",

@@ -100,7 +100,7 @@ export default function Sidebar() {
           </Link>
 
           <Link
-            href="/dashboard"
+            href="/interviews/new"
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "justify-start w-full"
@@ -111,7 +111,7 @@ export default function Sidebar() {
           </Link>
 
           <Link
-            href="/dashboard"
+            href="/interviews"
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "justify-start w-full"

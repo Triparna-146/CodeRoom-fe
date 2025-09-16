@@ -10,8 +10,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Eye, EyeOff, Github, Mail } from 'lucide-react'
+import { ArrowLeft, Eye, EyeOff, Github, Loader, Mail } from 'lucide-react'
 import { Logo } from '@/components/features/logo'
+import { toast } from 'sonner'
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Email is required'),
@@ -42,9 +43,10 @@ export default function LoginPage() {
       setIsLoading(false)
       // Handle successful login here
       console.log('Logging in with:', { email: data.email, password: data.password })
+      setIsLoading(false)
+      toast.success("Logged in successfully!")
     }, 2000)
-    setIsLoading(false)
-    console.log("Login clicked")
+    
   }
 
   return (
@@ -181,6 +183,7 @@ export default function LoginPage() {
                   disabled={isLoading} 
                 >
                   {isLoading ? "Signing in..." : "Sign in"}
+                  {isLoading && <Loader className="ml-2" />}
                 </Button>
               </form>
             </CardContent>

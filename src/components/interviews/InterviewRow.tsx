@@ -14,7 +14,7 @@ interface Interview {
   status: "Scheduled" | "Pending" | "Completed";
 }
 
-export function InterviewRow({ interview }: { interview: Interview }) {
+export default function InterviewRow({ interview }: { interview: Interview }) {
   const statusColor =
     interview.status === "Scheduled"
       ? "bg-blue-100 text-blue-800"

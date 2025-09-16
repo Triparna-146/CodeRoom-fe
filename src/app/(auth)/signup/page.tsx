@@ -10,9 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Eye, EyeOff, Github, Mail } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Github, Loader, Loader2Icon, Mail } from "lucide-react";
 import { Logo } from "@/components/features/logo";
 import { Sign } from "crypto";
+import { toast } from "sonner";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is Required"),
@@ -49,15 +50,17 @@ export default function SignupPage() {
       setIsLoading(true);
       // Simulate a login process
       setTimeout(() => {
-        setIsLoading(false);
+        
         // Handle successful login here
         console.log("Signing up with:", {
           name: data.name,
           email: data.email,
           password: data.password,
         });
+        toast.success("Signed up successfully!");
+        setIsLoading(false);
       }, 2000);
-      setIsLoading(false);
+      
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -232,6 +235,7 @@ export default function SignupPage() {
                   disabled={isLoading}
                 >
                   {isLoading ? "Creating account..." : "Sign up"}
+                  {isLoading && <Loader className="ml-2" />}
                 </Button>
               </form>
             </CardContent>
