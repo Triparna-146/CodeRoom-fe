@@ -12,6 +12,9 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Eye, EyeOff, Github, Mail } from 'lucide-react'
 import { Logo } from '@/components/features/logo'
+import axios from 'axios'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Email is required'),
@@ -26,6 +29,9 @@ type LoginFormInputs = {
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const router = useRouter()
 
   const {
     register,
@@ -37,14 +43,37 @@ export default function LoginPage() {
 
   const handleLogin = async (data: LoginFormInputs) => {
     setIsLoading(true)
-    // Simulate a login process
-    setTimeout(() => {
-      setIsLoading(false)
+    setError(null)
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+      const response = await axios.post(`${apiUrl}/auth/login`, {
+        email: data.email,
+        password: data.password,
+      })
+
       // Handle successful login here
-      console.log('Logging in with:', { email: data.email, password: data.password })
-    }, 2000)
-    setIsLoading(false)
-    console.log("Login clicked")
+      console.log('Login successful:', response.data)
+      toast.success('Login successful!')
+      router.push('/dashboard') // Redirect to dashboard or another page
+    } catch (error) {
+      console.error('Login failed:', error)
+      setError('Login failed. Please check your credentials.')
+      toast.error('Login failed. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+
+    // // Simulate a login process
+    // setTimeout(() => {
+    //   setIsLoading(false)
+    //   // Handle successful login here
+    //   console.log('Logging in with:', { email: data.email, password: data.password })
+    // }, 2000)
+    // setIsLoading(false)
+    // console.log("Login clicked")
+
   }
 
   return (
