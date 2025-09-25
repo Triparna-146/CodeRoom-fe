@@ -13,6 +13,9 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Eye, EyeOff, Github, Mail } from "lucide-react";
 import { Logo } from "@/components/features/logo";
 import { Sign } from "crypto";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast } from "sonner";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is Required"),
@@ -35,6 +38,9 @@ type SignupFormInputs = {
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null)
+
+  const router = useRouter();
 
   const {
     register,
@@ -45,22 +51,30 @@ export default function SignupPage() {
   });
 
   const handleSignup = async (data: SignupFormInputs) => {
+
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setIsLoading(true);
-      // Simulate a login process
-      setTimeout(() => {
-        setIsLoading(false);
-        // Handle successful login here
-        console.log("Signing up with:", {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        });
-      }, 2000);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      const response = await axios.post(`${apiUrl}/auth/signup`, {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log("Signup successful:", response.data);
+      toast.success('Signup successful! Please log in.');
+      router.push('/login');
+      
+    } catch (error) {
+      console.log(error);
+      setError('Signup failed. Please try again.');
+      toast.error('Signup failed. Please try again.');
+    } finally {
       setIsLoading(false);
-    } catch (error: any) {
-      console.log(error.message);
-    }
+    } 
   };
 
   return (
