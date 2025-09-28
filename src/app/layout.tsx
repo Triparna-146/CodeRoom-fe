@@ -9,6 +9,7 @@ import {
   spaceGrotesk 
 } from '@/lib/fonts'
 import { Toaster } from "sonner";
+import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "CodeRoom",
@@ -33,12 +34,15 @@ export default function RootLayout({
       <body
         className={inter.className}
       >
+
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >{children}
+          >
+          <Navbar />
+          <main>{children}</main>
         </ThemeProvider>
         <Toaster richColors position="top-right" />
       </body>
