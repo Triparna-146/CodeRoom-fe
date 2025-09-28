@@ -14,6 +14,13 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import * as yup from "yup";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { CalendarIcon } from "lucide-react"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
+
 
 // ✅ Form field types
 type InterviewFormInputs = {
@@ -80,143 +87,198 @@ export default function InterviewForm({
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 bg-card p-6 rounded-lg shadow-md"
-      >
-        {/* Interview Title */}
-        <FormField
-          control={form.control}
-          name="interviewTitle"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Interview Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter interview title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <div className="mx-auto w-full justify-center">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-4/5 space-y-6 rounded-lg"
+        >
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-10">
+            {mode === "create" ? "Schedule New Interview" : "Update Interview"}
+          </h2>
 
-        {/* Interview Type */}
-        <FormField
-          control={form.control}
-          name="interviewType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Interview Type</FormLabel>
-              <FormControl>
-                <Input placeholder="e.g. Technical, HR, Managerial" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Interview Title */}
+            <FormField
+              control={form.control}
+              name="interviewTitle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Interview Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter interview title"
+                      {...field}
+                      className="rounded-lg border px-3 py-5 shadow-sm"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        {/* Candidate Name */}
-        <FormField
-          control={form.control}
-          name="candidateName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Candidate Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter candidate name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            {/* Interview Type */}
+            <FormField
+              control={form.control}
+              name="interviewType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Interview Type</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g. Technical, HR, Managerial"
+                      {...field}
+                      className="rounded-lg border px-3 py-5 shadow-sm"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        {/* Candidate Email */}
-        <FormField
-          control={form.control}
-          name="candidateEmail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Candidate Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="Enter candidate email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <hr className="my-8" />
 
-        {/* Date & Time */}
-        <div className="grid grid-cols-2 gap-4">
+          {/* Date & Time */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date</FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Time</FormLabel>
+                  <FormControl>
+                    <Input type="time" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <hr className="my-8" />
+
+          {/* Description */}
           <FormField
             control={form.control}
-            name="date"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Date</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} />
+                  <Textarea
+                    placeholder="Enter any notes or details..."
+                    className="resize-none bg-secondary/40 rounded-lg border px-3 py-5 shadow-sm"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="time"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Time</FormLabel>
-                <FormControl>
-                  <Input type="time" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
 
-        {/* Description */}
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Enter any notes or details..."
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <hr className="my-8" />
 
-        {/* Resume */}
-        <FormField
-          control={form.control}
-          name="resume"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Candidate Resume (PDF)</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={(e) => field.onChange(e.target.files as FileList)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Candidate Name */}
+            <FormField
+              control={form.control}
+              name="candidateName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Candidate Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter candidate name"
+                      {...field}
+                      className="rounded-lg border px-3 py-5 shadow-sm"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Button type="submit" className="w-full">
-          {mode === "create" ? "Schedule Interview" : "Update Interview"}
-        </Button>
-      </form>
-    </Form>
+            {/* Candidate Email */}
+            <FormField
+              control={form.control}
+              name="candidateEmail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Candidate Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="Enter candidate email"
+                      {...field}
+                      className="rounded-lg border px-3 py-5 shadow-sm"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Resume */}
+            <FormField
+              control={form.control}
+              name="resume"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Candidate Resume (PDF)</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center rounded-lg border px-3 py-2 shadow-sm bg-secondary/40">
+                      {/* Hidden input */}
+                      <input
+                        id="resume-upload"
+                        type="file"
+                        accept="application/pdf"
+                        className="hidden"
+                        onChange={(e) =>
+                          field.onChange(e.target.files as FileList)
+                        }
+                      />
+
+                      {/* Styled button */}
+                      <label
+                        htmlFor="resume-upload"
+                        className="cursor-pointer rounded-md bg-violet-600 px-4 py-1 text-sm font-semibold text-white hover:bg-violet-700"
+                      >
+                        Upload
+                      </label>
+
+                      {/* File name display */}
+                      <span className="ml-3 text-sm text-gray-700 dark:text-gray-300 truncate">
+                        {field.value && field.value[0]
+                          ? field.value[0].name
+                          : "No file selected"}
+                      </span>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button type="submit" className="mt-5">
+            {mode === "create" ? "Schedule Interview" : "Update Interview"}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
