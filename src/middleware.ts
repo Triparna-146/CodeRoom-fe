@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("accessToken")?.value;
+  const token = req.cookies.get("__next_hmr_refresh_hash__")?.value;
 
   const { pathname } = req.nextUrl;
 
   // Public routes
-  const publicRoutes = ["/", "/login", "/signup", "/dashboard", "/interviews", "/interviews/new"];
+  const publicRoutes = ["/", "/login", "/signup"];
 
 
   // If user is logged in and tries to access login/signup, redirect to dashboard
