@@ -13,7 +13,6 @@ export default function InterviewsPage() {
       </div>
 
       {/* Filters */}
-      {/* @ts-expect-error Async Server Component if needed */}
       <InterviewTable />
     </div>
   );

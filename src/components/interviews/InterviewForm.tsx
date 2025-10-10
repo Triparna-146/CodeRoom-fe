@@ -20,6 +20,9 @@ import { CalendarIcon } from "lucide-react"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { use } from "react";
 
 
 // ✅ Form field types
@@ -31,7 +34,7 @@ type InterviewFormInputs = {
   time: string;
   candidateName: string;
   candidateEmail: string;
-  resume: FileList;
+  resume?: FileList;
 };
 
 // ✅ Validation schema (Yup v1 style)
@@ -49,7 +52,7 @@ const interviewFormSchema: yup.ObjectSchema<InterviewFormInputs> = yup
       .required("Candidate email is required"),
     resume: yup
       .mixed<FileList>()
-      .required("PDF file is required")
+      .optional()
       .test("fileType", "Only PDF files are allowed", (value) => {
         return value && value[0]?.type === "application/pdf";
       })
@@ -76,12 +79,18 @@ export default function InterviewForm({
     defaultValues,
   });
 
+  const router = useRouter();
+
   const onSubmit = (data: InterviewFormInputs) => {
     if (mode === "create") {
       console.log("Creating interview:", data);
+      toast.success("Interview created successfully!");
+      router.push("/interviews");
       // 🔥 call POST API here
     } else {
       console.log("Updating interview:", interviewId, data);
+      toast.success("Interview updated successfully!");
+      router.push("/interviews");
       // 🔥 call PUT/PATCH API here
     }
   };
