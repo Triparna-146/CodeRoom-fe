@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@100mslive/react-sdk": "^0.10.39",
     "@apollo/client": "^4.0.0",
     "@headlessui/react": "^2.2.6",
     "@hookform/resolvers": "^5.2.2",

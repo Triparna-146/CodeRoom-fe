@@ -4,7 +4,8 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import { StartInterviewButton } from "./StartInterviewButton";
 
 interface Interview {
   id: string;
@@ -16,7 +17,6 @@ interface Interview {
 }
 
 export default function InterviewRow({ interview }: { interview: Interview }) {
-
   const router = useRouter();
 
   const statusColor =
@@ -33,7 +33,7 @@ export default function InterviewRow({ interview }: { interview: Interview }) {
   };
 
   return (
-    <TableRow >
+    <TableRow className="mx-5">
       <TableCell className="font-medium">{interview.candidate}</TableCell>
       <TableCell>{interview.position}</TableCell>
       <TableCell>{new Date(interview.date).toLocaleDateString()}</TableCell>
@@ -42,10 +42,21 @@ export default function InterviewRow({ interview }: { interview: Interview }) {
         <Badge className={statusColor}>{interview.status}</Badge>
       </TableCell>
       <TableCell className="">
-        <Button className="px-4 py-1" onClick={() => handleEdit(interview.id)}>
-          {/* <MoreHorizontal className="h-4 w-4" /> */}
-          edit
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="secondary"
+            size="sm"
+            className="rounded-md px-3 py-1.5 text-sm font-medium"
+            onClick={() => handleEdit(interview.id)}
+          >
+            Edit
+          </Button>
+          <StartInterviewButton
+            interviewId={interview.id}
+            date={interview.date}
+            time={interview.time}
+          />
+        </div>
       </TableCell>
     </TableRow>
   );

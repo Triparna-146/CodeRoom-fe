@@ -19,8 +19,8 @@ const interviews: Interview[] = [
     id: "1",
     candidate: "Aarav Mehta",
     position: "Frontend Intern",
-    date: "2025-08-28",
-    time: "10:00 AM",
+    date: "2025-10-10",
+    time: "10:00 PM",
     status: "Scheduled",
   },
   {
@@ -50,7 +50,7 @@ export default function InterviewTable() {
       {/* Responsive Table Wrapper */}
       <div className="rounded-2xl border shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <Table>
+          <Table className="">
             <TableHeader>
               <TableRow className="bg-secondary/50">
                 <TableHead>Candidate</TableHead>
