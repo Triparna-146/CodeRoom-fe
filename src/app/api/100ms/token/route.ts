@@ -8,7 +8,7 @@ export async function POST() {
       throw new Error("Missing 100ms environment variables");
     }
 
-    const response = await fetch("https://sip.100ms.live/v2/rooms/" + HMS_ROOM_ID + "/token", {
+    const response = await fetch("https://api.100ms.live/v2/rooms/" + HMS_ROOM_ID + "/token", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${HMS_MANAGEMENT_TOKEN}`,
