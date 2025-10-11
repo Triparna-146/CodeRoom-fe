@@ -54,10 +54,14 @@ export default function LoginPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      const response = await axios.post(`${apiUrl}/auth/login`, {
-        email: data.email,
-        password: data.password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/auth/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        { withCredentials: true }
+      );
 
       // Handle successful login here
       console.log("Login successful:", response.data);
