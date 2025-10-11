@@ -8,7 +8,7 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Public routes
-  const publicRoutes = ["/", "/login", "/signup", "/dashboard"];
+  const publicRoutes = ["/", "/login", "/signup"];
 
 
   // If user is logged in and tries to access login/signup, redirect to dashboard
