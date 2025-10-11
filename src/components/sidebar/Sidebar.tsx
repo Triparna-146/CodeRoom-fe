@@ -66,8 +66,9 @@ import {
   Plus,
   List,
   ListChecks,
+  LogOut,
 } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Logo } from "../features/logo";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
@@ -79,10 +80,36 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "../features/theme-toggle";
 import { useTheme } from "next-themes";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const { setTheme, theme } = useTheme();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+      const response = await axios.post(
+      `${apiUrl}/auth/logout`,
+      {}, // no body needed
+      {
+        withCredentials: true, // IMPORTANT for cookie-based auth
+      }
+    );
+
+      if (response.status === 200) {
+        toast.success("Logged out successfully");
+        router.push("/login");
+      }
+    } catch (error) {
+      toast.error("Failed to log out");
+      console.error("Logout error:", error);
+    }
+  };
 
   const NavLinks = () => (
     <nav className="h-full px-4 py-8">
@@ -152,14 +179,24 @@ export default function Sidebar() {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="rounded-md">
-              <DropdownMenuItem className="gap-2 cursor-pointer" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-                <ThemeToggle className="h-4 w-4 bg-muted rounded-full" />{"Mode"}
+              <DropdownMenuItem
+                className="gap-2 cursor-pointer"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                <ThemeToggle className="h-4 w-4 bg-muted rounded-full" />
+                {"Mode"}
                 {/* you can also just put "Toggle Theme" text */}
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings" className="flex gap-2">
                   <Settings className="h-4 w-4" /> Settings
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="gap-2 text-red-600 cursor-pointer hover:bg-red-500 dark:hover:bg-red-500"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" /> Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -82,14 +82,6 @@ export default function LoginPage() {
       setIsLoading(false);
     }
 
-    // // Simulate a login process
-    // setTimeout(() => {
-    //   setIsLoading(false)
-    //   // Handle successful login here
-    //   console.log('Logging in with:', { email: data.email, password: data.password })
-    // }, 2000)
-    // setIsLoading(false)
-    // console.log("Login clicked")
   };
 
   return (

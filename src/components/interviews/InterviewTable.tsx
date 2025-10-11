@@ -27,7 +27,7 @@ const interviews: Interview[] = [
     id: "2",
     candidate: "Priya Sharma",
     position: "Backend Developer",
-    date: "2025-08-29",
+    date: "2025-10-10",
     time: "2:00 PM",
     status: "Pending",
   },
