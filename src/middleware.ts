@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("__next_hmr_refresh_hash__")?.value;
+  const token = req.cookies.get("accessToken")?.value;
 
   const { pathname } = req.nextUrl;
 
