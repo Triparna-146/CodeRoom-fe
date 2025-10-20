@@ -54,10 +54,14 @@ export default function LoginPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      const response = await axios.post(`${apiUrl}/auth/login`, {
-        email: data.email,
-        password: data.password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/auth/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        { withCredentials: true }
+      );
 
       // Handle successful login here
       console.log("Login successful:", response.data);
@@ -81,15 +85,26 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
+  };
 
-    // // Simulate a login process
-    // setTimeout(() => {
-    //   setIsLoading(false)
-    //   // Handle successful login here
-    //   console.log('Logging in with:', { email: data.email, password: data.password })
-    // }, 2000)
-    // setIsLoading(false)
-    // console.log("Login clicked")
+  const handleGoogleLogin = async () => {
+    // try {
+    //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    //   const response = await axios.get(`${apiUrl}/auth/google/login`, {
+    //     withCredentials: true,
+    //   });
+
+    //   // Handle successful Google login here
+    //   console.log("Google login successful:", response.data);
+    //   toast.success("Google login successful!");
+    //   router.push("/dashboard");
+    // } catch (error) {
+    //   console.error("Google login failed:", error);
+    //   toast.error("Google login failed. Please try again.");
+    // }
+    window.location.href = `https://coderoom-backend-seven.vercel.app/auth/google/login?redirect_uri=${encodeURIComponent("http://localhost:3000/dashboard")}`;
+
   };
 
   return (
@@ -157,6 +172,7 @@ export default function LoginPage() {
               variant="outline"
               className="w-full h-11"
               disabled={isLoading}
+              onClick={handleGoogleLogin}
             >
               <Mail className="w-4 h-4 mr-2" />
               Continue with Google
