@@ -8,18 +8,18 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Public routes
-  const publicRoutes = ["/", "/login", "/signup", ];
+  const publicRoutes = ["/", "/login", "/signup", "/interview", "dashboard"];
 
 
   // If user is logged in and tries to access login/signup, redirect to dashboard
-  if (token && (pathname === "/login" || pathname === "/signup")) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
-  }
+  // if (token && (pathname === "/login" || pathname === "/signup")) {
+  //   return NextResponse.redirect(new URL("/dashboard", req.url));
+  // }
 
-  // If no token and trying to access protected route, redirect to login
-  if (!token && !publicRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+  // // If no token and trying to access protected route, redirect to login
+  // if (!token && !publicRoutes.includes(pathname)) {
+  //   return NextResponse.redirect(new URL("/login", req.url));
+  // }
 
   return NextResponse.next();
 }
