@@ -38,7 +38,7 @@ export default function InterviewRow({ interview }: { interview: Interview }) {
   const startInterview = (interviewId: string) => {
     // Implement start interview functionality here
     console.log(`Starting interview with ID: ${interviewId}`);
-    router.push(`/interview/join?roomId=${interview.roomId}&token=${interview.inviteToken}`);
+    router.push(`/interviews/session/join?roomId=${interview.roomId}&token=${interview.inviteToken}`);
   }
 
   return (
