@@ -49,12 +49,12 @@ type InterviewFormInputs = {
 
 const INTERVIEW_TYPES = ["technical", "hr", "managerial", "other"] as const;
 
-
 // ✅ Validation schema (Yup v1 style)
 const interviewFormSchema: yup.ObjectSchema<InterviewFormInputs> = yup
   .object({
     interviewTitle: yup.string().required("Interview title is required"),
-    interviewType: yup.mixed<InterviewFormInputs["interviewType"]>()
+    interviewType: yup
+      .mixed<InterviewFormInputs["interviewType"]>()
       .oneOf(INTERVIEW_TYPES, "Invalid interview type")
       .required("Interview type is required"),
     description: yup.string().required("Description is required"),
@@ -121,9 +121,9 @@ export default function InterviewForm({
       }
 
       console.log("Resume URL:", resumeUrl);
-      
 
       const interviewPayload = {
+        interviewerId: '687f2f13b56613fb04b5b080',
         title: data.interviewTitle,
         type: data.interviewType,
         description: data.description,
@@ -198,13 +198,23 @@ export default function InterviewForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Interview Type</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="e.g. Technical, HR, Managerial"
-                      {...field}
-                      className="rounded-lg border px-3 py-5 shadow-sm"
-                    />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select interview type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {INTERVIEW_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
