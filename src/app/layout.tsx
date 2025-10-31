@@ -10,6 +10,7 @@ import {
 } from '@/lib/fonts'
 import { Toaster } from "sonner";
 import { PublicNavbar } from "@/components/navbar/PublicNavbar";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "CodeRoom",
@@ -42,7 +43,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
           {/* <PublicNavbar /> */}
-          <main>{children}</main>
+          <main>
+            <Providers>{children}</Providers>
+          </main>
         </ThemeProvider>
         <Toaster richColors position="top-right" />
       </body>

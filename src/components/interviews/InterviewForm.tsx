@@ -37,8 +37,8 @@ import axios from "axios";
 
 // ✅ Form field types
 type InterviewFormInputs = {
-  interviewTitle: string;
-  interviewType: string;
+  title: string;
+  type: string;
   description?: string;
   date: string;
   time: string;
@@ -52,9 +52,9 @@ const INTERVIEW_TYPES = ["technical", "hr", "managerial", "other"] as const;
 // ✅ Validation schema (Yup v1 style)
 const interviewFormSchema: yup.ObjectSchema<InterviewFormInputs> = yup
   .object({
-    interviewTitle: yup.string().required("Interview title is required"),
-    interviewType: yup
-      .mixed<InterviewFormInputs["interviewType"]>()
+    title: yup.string().required("Interview title is required"),
+    type: yup
+      .mixed<InterviewFormInputs["type"]>()
       .oneOf(INTERVIEW_TYPES, "Invalid interview type")
       .required("Interview type is required"),
     description: yup.string().required("Description is required"),
@@ -124,8 +124,8 @@ export default function InterviewForm({
 
       const interviewPayload = {
         interviewerId: '687f2f13b56613fb04b5b080',
-        title: data.interviewTitle,
-        type: data.interviewType,
+        title: data.title,
+        type: data.type,
         description: data.description,
         date: data.date,
         time: data.time,
@@ -175,7 +175,7 @@ export default function InterviewForm({
             {/* Interview Title */}
             <FormField
               control={form.control}
-              name="interviewTitle"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Interview Title</FormLabel>
@@ -194,7 +194,7 @@ export default function InterviewForm({
             {/* Interview Type */}
             <FormField
               control={form.control}
-              name="interviewType"
+              name="type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Interview Type</FormLabel>
