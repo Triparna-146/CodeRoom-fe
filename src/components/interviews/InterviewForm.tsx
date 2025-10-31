@@ -14,16 +14,26 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import * as yup from "yup";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon } from "lucide-react"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { use } from "react";
-
+import axios from "axios";
 
 // ✅ Form field types
 type InterviewFormInputs = {
@@ -37,11 +47,16 @@ type InterviewFormInputs = {
   resume?: FileList;
 };
 
+const INTERVIEW_TYPES = ["technical", "hr", "managerial", "other"] as const;
+
+
 // ✅ Validation schema (Yup v1 style)
 const interviewFormSchema: yup.ObjectSchema<InterviewFormInputs> = yup
   .object({
     interviewTitle: yup.string().required("Interview title is required"),
-    interviewType: yup.string().required("Interview type is required"),
+    interviewType: yup.mixed<InterviewFormInputs["interviewType"]>()
+      .oneOf(INTERVIEW_TYPES, "Invalid interview type")
+      .required("Interview type is required"),
     description: yup.string().required("Description is required"),
     date: yup.string().required("Date is required"),
     time: yup.string().required("Time is required"),
@@ -81,17 +96,67 @@ export default function InterviewForm({
 
   const router = useRouter();
 
-  const onSubmit = (data: InterviewFormInputs) => {
-    if (mode === "create") {
-      console.log("Creating interview:", data);
-      toast.success("Interview created successfully!");
+  const onSubmit = async (data: InterviewFormInputs) => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      let resumeUrl = "";
+
+      // 🧩 STEP 1: Upload resume to Cloudinary (if selected)
+      if (data.resume && data.resume[0]) {
+        const formData = new FormData();
+        formData.append("resume", data.resume[0]);
+
+        console.log("Uploading resume:", formData.get("resume"));
+
+        const uploadRes = await axios.post(
+          `${apiUrl}/cloudinary/upload`,
+          formData,
+          {
+            withCredentials: true,
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        resumeUrl = uploadRes.data.url; // your backend should return { url: "https://..." }
+      }
+
+      console.log("Resume URL:", resumeUrl);
+      
+
+      const interviewPayload = {
+        title: data.interviewTitle,
+        type: data.interviewType,
+        description: data.description,
+        date: data.date,
+        time: data.time,
+        candidateName: data.candidateName,
+        candidateEmail: data.candidateEmail,
+        resumeUrl: resumeUrl || defaultValues?.resume, // keep old resume if editing
+      };
+
+      console.log("Interview Payload:", interviewPayload);
+
+      if (mode === "create") {
+        await axios.post(`${apiUrl}/interview/schedule`, interviewPayload, {
+          withCredentials: true,
+        });
+        toast.success("Interview scheduled successfully!");
+      } else {
+        await axios.put(
+          `${apiUrl}/interviews/${interviewId}`,
+          interviewPayload,
+          {
+            withCredentials: true,
+          }
+        );
+        toast.success("Interview updated successfully!");
+      }
+
+      // 🧩 STEP 4: Redirect
       router.push("/interviews");
-      // 🔥 call POST API here
-    } else {
-      console.log("Updating interview:", interviewId, data);
-      toast.success("Interview updated successfully!");
-      router.push("/interviews");
-      // 🔥 call PUT/PATCH API here
+    } catch (error: any) {
+      console.error("Error submitting interview:", error);
+      toast.error(error.response?.data?.message || "Something went wrong!");
     }
   };
 

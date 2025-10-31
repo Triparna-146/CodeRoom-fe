@@ -101,7 +101,7 @@ export default function Sidebar() {
       }
     );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success("Logged out successfully");
         router.push("/login");
       }
