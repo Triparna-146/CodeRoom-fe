@@ -8,5 +8,5 @@ export default function InterviewRoom() {
 
     if (!roomId) return <div>Loading...</div>;
 
-    return <VideoCall roomId={roomId as string} />;
+    return <VideoCall roomId={"TestRoom"} />;
 }

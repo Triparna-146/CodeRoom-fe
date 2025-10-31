@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:3001"); // your NestJS backend
+const socket = io("http://localhost:4000"); // your NestJS backend
 
 export default function VideoCall({ roomId }: { roomId: string }) {
     const localVideo = useRef<HTMLVideoElement>(null);
